@@ -613,6 +613,7 @@ enum {
 // MSI Mode Register
 #define MSI_MODE                          0x00006000
 #define MSI_MODE_ENABLE                   BIT(1)
+#define MSI_MODE_1SHOT_DISABLE            BIT(5)
 
 // MSI Status Register
 #define MSI_STATUS                        0x00006004
@@ -638,7 +639,7 @@ enum {
 #define GCR_MISCCFG_CORECLOCKRST          BIT(0)
 #define GCR_MISCCFG_TIMERPSCALERMASK      0x000000FE
 #define GCR_MISCCFG_TIMERPSCALERSHFT      1
-#define GCR_MISCCFG_PHYIDDQ               BIT(21)
+#define GCR_MISCCFG_PHYIDDQ               BIT(20)
 #define GCR_MISCCFG_GPHYPWRDWN            BIT(26)
 #define GCR_MISCCFG_DISABLEGRCRST         BIT(29)
 #define GCR_MISCCFG_TP_66MHZ              (0x41 << GCR_MISCCFG_TIMERPSCALERSHFT)
@@ -647,6 +648,8 @@ enum {
 #define GCR_MISCLCLCTL                    0x00006808
 #define GCR_MISCLCLCTL_IRQONATTN          BIT(3)
 #define GCR_MISCLCLCTL_GPIO_UART_SEL      BIT(4)
+#define GCR_MISCLCLCTL_GPIO3_IN           BIT(5)
+#define GCR_MISCLCLCTL_GPIO3_OUT          BIT(6)
 #define GCR_MISCLCLCTL_GPIO_OUTE0         BIT(11)
 #define GCR_MISCLCLCTL_GPIO_OUTE1         BIT(12)
 #define GCR_MISCLCLCTL_GPIO_OUTE2         BIT(13)

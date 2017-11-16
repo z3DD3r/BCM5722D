@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>${MODULE_VERSION}</string>
+	<string>1</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>BCM5722D</key>
@@ -39,6 +39,7 @@
 				<string>pci14e4,1672</string>
 				<string>pci14e4,167b</string>
 				<string>pci14e4,1673</string>
+				<string>pci14e4,1681</string>
 				<string>pci14e4,1691</string>
 				<string>pci14e4,169b</string>
 				<string>pci14e4,1693</string>
