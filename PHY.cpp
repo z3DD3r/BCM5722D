@@ -45,6 +45,7 @@ bool BCM5722D::probePHY()
   phyID |= ((id2 & 0xFC00) << 16);
   phyID |= ((id2 & 0x03FF) << 0);
 
+DebugLog("GET_ASICREV(asicRevision)=%x", GET_ASICREV(asicRevision));
   if (GET_ASICREV(asicRevision) != ASICREV_C) {
     phyFlags |= PHYFLAG_ETHERNET_WIRESPEED;
   } else {
@@ -59,13 +60,14 @@ bool BCM5722D::probePHY()
     phyFlags |= PHYFLAG_BUG_JITTER;
   }
 
-
+DebugLog("PhyFlags = %x", phyFlags);
   return true;
 } // probePHY()
 
 
 bool BCM5722D::setupPHY()
 {
+DebugLog("enter");
   acknowledgeInterrupt();
 
   UInt16     miiStatus;
@@ -121,6 +123,7 @@ bool BCM5722D::setupPHY()
   writeCSR(EMAC_EVENT, EMAC_EVENT_LNKSTATECHGD);
   IODelay(40);
 
+DebugLog("exit");
   return true;
 } // setupPHY()
 
@@ -372,6 +375,12 @@ IOReturn BCM5722D::setMedium(const IONetworkMedium *medium)
       DebugLog("Change medium: kIOMediumEthernet1000BaseT");
       changeSpeed = kLinkSpeed1000;
       break;
+          
+    default:
+      DebugLog("ATTENTION: Change medium: %x unhandled", IOMediumGetSubType(type) + kIOMediumEthernet);
+      changeSpeed = kLinkSpeedNegotiate;
+      changeDuplex = kLinkDuplexNegotiate;
+      break;
 
   }
 
@@ -420,7 +429,8 @@ inline UInt16 BCM5722D::resolvePauseAdvertisement(FlowControl flowControl)
     case kFlowControlSymmetric:
 
       advertise = PHY_AUTONEGADVERT_PAUSECAP;
-
+          
+    default:
       break;
 
   }
@@ -470,6 +480,7 @@ setupFlowControlDone:
     case kFlowControlSymmetric:
       txMode |= EMAC_TXMODE_FLOWCTL;
       rxMode |= EMAC_RXMODE_FLOWCTL;
+    default:
       break;
   }
 
@@ -505,7 +516,6 @@ void BCM5722D::configureLinkAdvertisement(LinkSpeed linkSpeed,
                        PHY_1000BASETCTL_ADVERTFD
                        );
       }
-
       break;
 
     case kLinkSpeed1000:
@@ -549,16 +559,22 @@ void BCM5722D::configureLinkAdvertisement(LinkSpeed linkSpeed,
       }
 
       break;
+          
+      default:
+          DebugLog("ATTENTION: unknown linkSpeed: %x", linkSpeed);
+          break;
 
   }
 
   DebugLog("advertiseFe: %X", advertiseFe);
-  DebugLog("advertiseGe: %X", advertiseGe);
-
   writeMII(PHY_AUTONEGADVERT, advertiseFe);
 
   if (!(phyFlags & PHYFLAG_FAST_ETHERNET)) {
+    DebugLog("advertiseGe: %X", advertiseGe);
     writeMII(PHY_1000BASETCTL, advertiseGe);
+
+    DebugLog("calling serviceLinkInterrupt");
+    serviceLinkInterrupt();
   }
 } // configureLinkAdvertisement()
 
@@ -603,7 +619,7 @@ bool BCM5722D::forceLinkSpeedDuplex(LinkSpeed changeSpeed,
     case kLinkSpeed100:
       miiCtl = PHY_MIICTL_SPEED_100;
       media.speed = kLinkSpeed100;
-
+      
       break;
 
     case kLinkSpeed1000:
@@ -616,7 +632,10 @@ bool BCM5722D::forceLinkSpeedDuplex(LinkSpeed changeSpeed,
       configureLinkAdvertisement(changeSpeed, changeDuplex);
 
       autoNegotiate = true;
-
+      break;
+          
+    default:
+      DebugLog("ATTENTION: unknown linkSpeed: %x", changeSpeed);
       break;
 
   }
@@ -692,7 +711,7 @@ void BCM5722D::resolveOperatingSpeedAndLinkDuplex(UInt16 status)
       break;
 
     default:
-
+      DebugLog("ATTENTION: Unknown status: %x", status & PHY_AUXSTAT_SPDDPLXMASK);
       media.speed = kLinkSpeedNone;
       media.duplex = kLinkDuplexNone;
 
@@ -791,6 +810,7 @@ inline void BCM5722D::reportLinkStatus()
 
 void BCM5722D::serviceLinkInterrupt()
 {
+DebugLog("enter");
   statusBlock->statusWord &= ~STATUS_WORD_LNKCHGD;
 
   setupPHY();
@@ -804,6 +824,7 @@ void BCM5722D::serviceLinkInterrupt()
   }
 
   reportLinkStatus();
+DebugLog("exit");
 } // serviceLinkInterrupt()
 
 
@@ -813,6 +834,7 @@ void BCM5722D::serviceLinkInterrupt()
 
 IOReturn BCM5722D::writeMII(UInt8 reg, UInt16 value)
 {
+//DebugLog("enter");
   UInt32 miMode;
   UInt32 miComm;
   int i;
@@ -820,7 +842,7 @@ IOReturn BCM5722D::writeMII(UInt8 reg, UInt16 value)
   miMode = readCSR(EMAC_MIMODE);
 
   if (miMode & EMAC_MIMODE_PORTPOLL) {
-
+//DebugLog("writeCSR(EMAC_MIMODE, miMode & ~EMAC_MIMODE_PORTPOLL);");
     writeCSR(EMAC_MIMODE, miMode & ~EMAC_MIMODE_PORTPOLL);
     IODelay(40);
 
@@ -849,15 +871,18 @@ IOReturn BCM5722D::writeMII(UInt8 reg, UInt16 value)
 
   if (miMode & EMAC_MIMODE_PORTPOLL) {
 
+//DebugLog("writeCSR(EMAC_MIMODE, miMode);");
     writeCSR(EMAC_MIMODE, miMode);
     IODelay(40);
 
   }
 
   if (i == 5000) {
+DebugLog("exit kIOReturnBusy");
     return kIOReturnBusy;
   }
 
+//DebugLog("exit kIOReturnSuccess");
   return kIOReturnSuccess;
 } // writeMII()
 

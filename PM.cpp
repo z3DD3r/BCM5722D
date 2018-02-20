@@ -80,20 +80,19 @@ IOReturn BCM5722D::setPowerState(unsigned long powerStateOrdinal,
     return IOPMAckImplied;
   }
 
-  DebugLog("Changing power state from %lu to %lu",
-           currentPowerState, powerStateOrdinal);
+  DebugLog("Changing power state from %lu to %lu", currentPowerState, powerStateOrdinal);
   
   switch (powerStateOrdinal) {
 
     case kPowerStateOn:
-
+    {
       pciNub->configWrite16(kPCIPMCS, kPCIPMCSPMEStatus);
       IOSleep(10);
 
       break;
-
+    }
     case kPowerStateOff:
-
+    {
       IOOptionBits state = (wakeOnLanEnabled ?
                             kPCIPMCPMESupportFromD3Cold :
                             kPCIPMCD3Support);
@@ -105,7 +104,13 @@ IOReturn BCM5722D::setPowerState(unsigned long powerStateOrdinal,
       pciNub->hasPCIPowerManagement(state);
 
       break;
-  }
+    }
+    default:
+    {
+      DebugLog("ATTENTION: unknown powerStateOrdinal: %lx", powerStateOrdinal);
+      break;
+    }
+ }
 
   currentPowerState = powerStateOrdinal;
 
