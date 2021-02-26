@@ -310,6 +310,7 @@ IOReturn BCM5722D::enable(IONetworkInterface *iface)
         
         selectMedium(getSelectedMedium());
         
+        serviceLinkInterrupt();
         setLinkStatus(kIONetworkLinkValid, 0);
         transmitQueue->setCapacity(txQueueLength);
         transmitQueue->start();
