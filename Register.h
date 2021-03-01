@@ -31,7 +31,7 @@
 #define DEVICEID_BCM5906                  0x1712
 #define DEVICEID_BCM5906M                 0x1713
 #define DEVICEID_BCM57788                 0x1691
-#define DEVICEID_BCM5784                  0x1698
+#define DEVICEID_BCM5784M                 0x1698
 #define DEVICEID_BCM57785                 0x16b5
 #define DEVICEID_BCM57781                 0x16b1
 #define DEVICEID_BCM57780                 0x1692
