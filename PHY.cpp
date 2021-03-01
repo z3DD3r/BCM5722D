@@ -78,7 +78,7 @@ DebugLog("enter");
 
   if (miiStatus & PHY_MIISTAT_LINKSTAT) {
 
-    UInt16 auxStat;
+    UInt16 auxStat = 0;
     UInt16 local   = 0;
     UInt16 partner = 0;
     int    i;
@@ -408,7 +408,7 @@ IOReturn BCM5722D::setMedium(const IONetworkMedium *medium)
 
 inline UInt16 BCM5722D::resolvePauseAdvertisement(FlowControl flowControl)
 {
-  UInt16 advertise;
+  UInt16 advertise = 0;
 
   switch (flowControl) {
 
@@ -606,7 +606,7 @@ bool BCM5722D::forceLinkSpeedDuplex(LinkSpeed changeSpeed,
   Log("Forcing link speed: %d MBps, %s duplex",
       changeSpeed, (changeDuplex == kLinkDuplexFull ? "full" : "half"));
 
-  UInt16 miiCtl;
+  UInt16 miiCtl = 0;
 
   switch (changeSpeed) {
 
@@ -889,8 +889,8 @@ DebugLog("exit kIOReturnBusy");
 
 IOReturn BCM5722D::readMII(UInt8 reg, UInt16 *value)
 {
-  UInt32 miMode;
-  UInt32 miComm;
+  UInt32 miMode = 0;
+  UInt32 miComm = 0;
   int i;
 
   miMode = readCSR(EMAC_MIMODE);

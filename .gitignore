@@ -5,7 +5,10 @@
 tags
 types_c.vim
 
-build/
+build/*
+xcuserdata
+*.xccheckout
+*.xcuserstate
 
 *.pbxuser
 *.mode1v3

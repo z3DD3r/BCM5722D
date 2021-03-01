@@ -672,7 +672,7 @@ void BCM5722D::freeDescriptorMemory(IOBufferMemoryDescriptor **memory)
 
 bool BCM5722D::allocateDriverMemory()
 {
-  bool success;
+  bool success = false;
 
   do {
 

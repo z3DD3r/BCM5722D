@@ -551,7 +551,7 @@ UInt32 BCM5722D::outputPacket(mbuf_t m, void *param)
         }
         
         int producer = txProducerIdx;
-        int lastSegment;
+        int lastSegment = 0;
         
         for (int i = 0; i < segmentCount; i++) {
             txBD[producer].addressHigh = HOSTADDRESS_HI(segments[i].location);

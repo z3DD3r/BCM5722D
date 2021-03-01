@@ -160,46 +160,46 @@ class BCM5722D : public IOEthernetController
 #pragma mark -
 #pragma mark IOService Methods
 
-  virtual bool start(IOService *provider);
-  virtual void stop(IOService *provider);
-  virtual void free(void);
+  virtual bool start(IOService *provider) override;
+  virtual void stop(IOService *provider) override;
+  virtual void free(void) override;
 
 #pragma mark -
 #pragma mark IONetworkController Methods
 
-  virtual IOReturn        enable(IONetworkInterface *iface);
-  virtual IOReturn        disable(IONetworkInterface *iface);
-    virtual void            systemWillShutdown(IOOptionBits specifier);
-  virtual bool            createWorkLoop();
-  virtual IOWorkLoop     *getWorkLoop(void) const;
-  virtual IOOutputQueue  *createOutputQueue();
-  virtual bool            configureInterface(IONetworkInterface *iface);
+  virtual IOReturn        enable(IONetworkInterface *iface) override;
+  virtual IOReturn        disable(IONetworkInterface *iface) override;
+  virtual void            systemWillShutdown(IOOptionBits specifier) override;
+  virtual bool            createWorkLoop() override;
+  virtual IOWorkLoop     *getWorkLoop(void) const override;
+  virtual IOOutputQueue  *createOutputQueue() override;
+  virtual bool            configureInterface(IONetworkInterface *iface) override;
   virtual IOReturn        getChecksumSupport(UInt32 *checksumMask,
                                              UInt32 checksumFamily,
-                                             bool isOutput);
+                                             bool isOutput) override;
   virtual IOReturn        getPacketFilters(const OSSymbol *group,
-                                           UInt32 *filters) const;
-  virtual IOReturn        getMaxPacketSize(UInt32 *maxSize) const;
-  virtual IOReturn        registerWithPolicyMaker(IOService *policyMaker);
+                                           UInt32 *filters) const override;
+  virtual IOReturn        getMaxPacketSize(UInt32 *maxSize) const override;
+  virtual IOReturn        registerWithPolicyMaker(IOService *policyMaker) override;
   virtual IOReturn        setPowerState(unsigned long powerStateOrdinal,
-                                        IOService *policyMaker);
+                                        IOService *policyMaker) override;
   virtual UInt32          outputPacket(mbuf_t m,
-                                       void *param);
-  virtual IOReturn        selectMedium(const IONetworkMedium *medium);
-  virtual const OSString *newModelString() const;
-  virtual const OSString *newRevisionString() const;
-  virtual const OSString *newVendorString() const;
+                                       void *param) override;
+  virtual IOReturn        selectMedium(const IONetworkMedium *medium) override;
+  virtual const OSString *newModelString() const override;
+  virtual const OSString *newRevisionString() const override;
+  virtual const OSString *newVendorString() const override;
 
 #pragma mark -
 #pragma mark IOEthernetController Methods
 
-  virtual IOReturn getHardwareAddress(IOEthernetAddress *address);
-  virtual IOReturn setHardwareAddress(const IOEthernetAddress *address);
-  virtual IOReturn setWakeOnMagicPacket(bool active);
-  virtual IOReturn setMulticastMode(bool active);
+  virtual IOReturn getHardwareAddress(IOEthernetAddress *address) override;
+  virtual IOReturn setHardwareAddress(const IOEthernetAddress *address) override;
+  virtual IOReturn setWakeOnMagicPacket(bool active) override;
+  virtual IOReturn setMulticastMode(bool active) override;
   virtual IOReturn setMulticastList(IOEthernetAddress *addrs,
-                                    UInt32 count);
-  virtual IOReturn setPromiscuousMode(bool active);
+                                    UInt32 count) override;
+  virtual IOReturn setPromiscuousMode(bool active) override;
 
 #pragma mark -
 #pragma mark MAC
