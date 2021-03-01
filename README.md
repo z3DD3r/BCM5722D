@@ -12,9 +12,16 @@ It supports the following models:
 * BCM5722
 * BCM5754
 * BCM5754M
+* BCM5752
 * BCM5755
 * BCM5755M
+* BCM5761
+* BCM5761E
+* BCM57780
+* BCM57781
+* BCM57785
 * BCM57788
+* BCM5784M
 * BCM5787
 * BCM5787M
 * BCM5906
@@ -33,24 +40,6 @@ Method of installation
 or
 
 Install in kext dir of Clover
-
-Downloads
----------
-
-Downloads are available on Bitbucket:
-
-https://bitbucket.org/Jief666/bcm5722d/downloads
-
-Issues
-------
-
-Please report any issues you found at <https://github.com/adlan/BCM5722D/issues>
-
-Contributing
-------------
-
-Visit the [project's wiki page](https://github.com/adlan/BCM5722D/wiki)
-for details.
 
 License
 -------
